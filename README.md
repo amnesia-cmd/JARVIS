@@ -1,22 +1,24 @@
 # Jarvis
 
-Jarvis is a sleek full-stack personal AI assistant with a sci-fi dark UI, Claude-powered chat, markdown replies, session memory, and automatic spoken responses in a female voice using the browser's Web Speech API.
+Jarvis is a sleek full-stack personal AI assistant with a sci-fi dark UI, Groq-powered chat, persistent JSON-backed conversation history, markdown replies, and automatic spoken responses in a female voice using the browser's Web Speech API.
 
 ## Features
 
 - Full-screen chat interface inspired by modern AI assistants
-- Claude API integration with full in-session conversation history
+- Groq API integration with persistent multi-chat history
 - Markdown rendering for AI responses
 - Auto-scroll, typing indicator, timestamps, and message replay audio
 - Female voice auto-selected with mute/unmute control
-- New Chat button that clears history and stops speech
+- Responsive sidebar with saved conversations, timestamps, and delete controls
+- New Chat button that creates a fresh conversation and stops speech
+- Local JSON file storage for saved conversations in `server/chats.json`
 - Express backend with CORS and dotenv support
 
 ## Tech Stack
 
 - Frontend: HTML, CSS, Vanilla JavaScript
 - Backend: Node.js, Express
-- AI: Anthropic Claude (`claude-sonnet-4-20250514`)
+- AI: Groq (`llama-3.3-70b-versatile`)
 - Voice: Web Speech API (`speechSynthesis`)
 
 ## Project Structure
@@ -29,7 +31,9 @@ jarvis/
     script.js
   server/
     index.js
+    chats.json
   .env
+  .gitignore
   package.json
   README.md
 ```
@@ -43,10 +47,10 @@ jarvis/
 npm install
 ```
 
-3. Add your Anthropic API key in `.env`:
+3. Add your Groq API key in `.env`:
 
 ```env
-ANTHROPIC_API_KEY=your_real_key_here
+GROQ_API_KEY=your_real_key_here
 ```
 
 4. Start the server:
@@ -59,29 +63,15 @@ npm start
 
 ## API
 
-### `POST /api/chat`
-
-Request body:
-
-```json
-{
-  "messages": [
-    { "role": "user", "content": "Hello" },
-    { "role": "assistant", "content": "Hi, how can I help?" }
-  ]
-}
-```
-
-Response body:
-
-```json
-{
-  "reply": "Jarvis reply text"
-}
-```
+- `GET /api/chats` returns the saved conversation list
+- `GET /api/chats/:id` returns a full conversation with messages
+- `POST /api/chats` creates a new conversation with the Jarvis welcome message
+- `POST /api/chats/:id/messages` adds a user message and stores the AI reply
+- `DELETE /api/chats/:id` removes a conversation
 
 ## Notes
 
 - Voice playback depends on the voices available in the user's browser and operating system.
 - Browsers may require a user interaction before speech playback works consistently.
-- The frontend stores chat history in memory for the current page session only.
+- Chat history is saved locally in `server/chats.json` and reloaded when the app restarts.
+- `server/chats.json` is ignored by Git so local conversations do not get committed.
