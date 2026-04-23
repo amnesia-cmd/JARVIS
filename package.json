@@ -1,0 +1,26 @@
+{
+  "name": "jarvis-assistant",
+  "version": "1.0.0",
+  "description": "Jarvis personal AI assistant powered by Claude",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "keywords": [
+    "jarvis",
+    "claude",
+    "anthropic",
+    "assistant",
+    "chatbot"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.54.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "groq-sdk": "^1.1.2"
+  }
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jarvis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="navbar">
+        <div class="brand">
+          <span class="brand-dot"></span>
+          <div>
+            <h1>J A R V I S</h1>
+            <p>Personal AI Assistant</p>
+          </div>
+        </div>
+
+        <div class="nav-actions">
+          <button id="muteToggle" class="ghost-button" type="button" aria-pressed="false">
+            <span class="button-icon">🔊</span>
+            <span class="button-label">Voice On</span>
+          </button>
+          <button id="newChatButton" class="ghost-button" type="button">New Chat</button>
+        </div>
+      </header>
+
+      <main id="chatContainer" class="chat-container" aria-live="polite"></main>
+
+      <div id="typingIndicator" class="typing-indicator hidden">
+        <div class="avatar-block">
+          <div class="avatar">J</div>
+          <div class="sound-wave passive">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+        <div class="typing-bubble">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <form id="chatForm" class="input-bar">
+        <label class="sr-only" for="messageInput">Message Jarvis</label>
+        <textarea
+          id="messageInput"
+          placeholder="Ask Jarvis anything..."
+          rows="1"
+          autocomplete="off"
+        ></textarea>
+        <button id="sendButton" type="submit" class="send-button">Send</button>
+      </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
