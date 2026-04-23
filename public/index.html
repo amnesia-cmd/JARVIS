@@ -14,52 +14,80 @@
   </head>
   <body>
     <div class="app-shell">
-      <header class="navbar">
-        <div class="brand">
-          <span class="brand-dot"></span>
-          <div>
-            <h1>J A R V I S</h1>
-            <p>Personal AI Assistant</p>
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+          <div class="brand">
+            <span class="brand-dot"></span>
+            <div>
+              <h1>Jarvis</h1>
+              <p>Personal AI Assistant</p>
+            </div>
           </div>
+          <button id="newChatButton" class="new-chat-button" type="button">+ New Chat</button>
         </div>
 
-        <div class="nav-actions">
+        <div class="sidebar-divider"></div>
+
+        <div id="chatList" class="chat-list" aria-label="Conversation history"></div>
+      </aside>
+
+      <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+      <section class="main-panel">
+        <header class="topbar">
+          <div class="topbar-left">
+            <button
+              id="menuToggle"
+              class="icon-button mobile-only"
+              type="button"
+              aria-label="Toggle chat history"
+              aria-expanded="false"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+            <div class="topbar-title">
+              <h2 id="chatTitle">New Chat</h2>
+              <p id="chatSubtitle">Persistent conversation history enabled</p>
+            </div>
+          </div>
+
           <button id="muteToggle" class="ghost-button" type="button" aria-pressed="false">
-            <span class="button-icon">🔊</span>
+            <span class="button-icon">&#128266;</span>
             <span class="button-label">Voice On</span>
           </button>
-          <button id="newChatButton" class="ghost-button" type="button">New Chat</button>
-        </div>
-      </header>
+        </header>
 
-      <main id="chatContainer" class="chat-container" aria-live="polite"></main>
+        <main id="chatContainer" class="chat-container" aria-live="polite"></main>
 
-      <div id="typingIndicator" class="typing-indicator hidden">
-        <div class="avatar-block">
-          <div class="avatar">J</div>
-          <div class="sound-wave passive">
+        <div id="typingIndicator" class="typing-indicator hidden">
+          <div class="avatar-block">
+            <div class="avatar">J</div>
+            <div class="sound-wave passive">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          <div class="typing-bubble">
             <span></span>
             <span></span>
             <span></span>
           </div>
         </div>
-        <div class="typing-bubble">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
 
-      <form id="chatForm" class="input-bar">
-        <label class="sr-only" for="messageInput">Message Jarvis</label>
-        <textarea
-          id="messageInput"
-          placeholder="Ask Jarvis anything..."
-          rows="1"
-          autocomplete="off"
-        ></textarea>
-        <button id="sendButton" type="submit" class="send-button">Send</button>
-      </form>
+        <form id="chatForm" class="input-bar">
+          <label class="sr-only" for="messageInput">Message Jarvis</label>
+          <textarea
+            id="messageInput"
+            placeholder="Ask Jarvis anything..."
+            rows="1"
+            autocomplete="off"
+          ></textarea>
+          <button id="sendButton" type="submit" class="send-button">Send</button>
+        </form>
+      </section>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
