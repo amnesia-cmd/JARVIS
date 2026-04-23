@@ -1,15 +1,17 @@
 :root {
   --bg: #0a0a0f;
-  --nav: #111118;
+  --sidebar: #111118;
   --panel: rgba(17, 17, 24, 0.92);
+  --panel-solid: #10101a;
   --border: rgba(124, 58, 237, 0.22);
+  --divider: rgba(148, 163, 184, 0.12);
   --accent: #7c3aed;
   --accent-soft: rgba(124, 58, 237, 0.18);
   --user: #3b82f6;
-  --user-soft: rgba(59, 130, 246, 0.2);
   --assistant: #1a1a2e;
   --text: #e2e8f0;
   --muted: #94a3b8;
+  --danger: #ef4444;
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
 }
 
@@ -22,8 +24,8 @@ body {
   margin: 0;
   min-height: 100%;
   background:
-    radial-gradient(circle at top, rgba(124, 58, 237, 0.18), transparent 28%),
-    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.16), transparent 25%),
+    radial-gradient(circle at top left, rgba(124, 58, 237, 0.16), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.14), transparent 22%),
     var(--bg);
   color: var(--text);
   font-family: "Inter", sans-serif;
@@ -31,32 +33,38 @@ body {
 
 body {
   min-height: 100vh;
+  overflow: hidden;
+}
+
+button,
+textarea {
+  font: inherit;
 }
 
 .app-shell {
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 280px minmax(0, 1fr);
   height: 100vh;
 }
 
-.navbar {
+.sidebar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 1.5rem;
-  background: rgba(17, 17, 24, 0.88);
-  border-bottom: 1px solid rgba(124, 58, 237, 0.16);
-  backdrop-filter: blur(18px);
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  flex-direction: column;
+  background: linear-gradient(180deg, rgba(17, 17, 24, 0.98), rgba(9, 9, 14, 0.98));
+  border-right: 1px solid var(--divider);
+  position: relative;
+  z-index: 30;
+}
+
+.sidebar-header {
+  padding: 1.25rem 1rem 1rem;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
 }
 
 .brand-dot {
@@ -76,33 +84,212 @@ body {
 
 .brand h1 {
   font-size: 1rem;
-  letter-spacing: 0.5rem;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .brand p {
-  font-size: 0.78rem;
-  color: var(--muted);
   margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.8rem;
 }
 
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
+.new-chat-button,
 .ghost-button,
-.send-button {
+.send-button,
+.icon-button,
+.chat-delete {
   border: 0;
-  border-radius: 999px;
-  font: inherit;
   cursor: pointer;
   transition:
     transform 0.2s ease,
-    box-shadow 0.2s ease,
     background 0.2s ease,
+    box-shadow 0.2s ease,
     opacity 0.2s ease;
+}
+
+.new-chat-button {
+  width: 100%;
+  border-radius: 16px;
+  padding: 0.9rem 1rem;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.92), rgba(59, 130, 246, 0.82));
+  box-shadow: 0 16px 40px rgba(124, 58, 237, 0.22);
+}
+
+.new-chat-button:hover,
+.ghost-button:hover,
+.send-button:hover,
+.icon-button:hover {
+  transform: translateY(-1px);
+}
+
+.sidebar-divider {
+  height: 1px;
+  margin: 0 1rem;
+  background: var(--divider);
+}
+
+.chat-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.9rem 0.75rem 1rem;
+}
+
+.chat-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.45rem;
+}
+
+.chat-open {
+  width: 100%;
+  border: 1px solid transparent;
+  border-left: 3px solid transparent;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--muted);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 0.85rem 0.9rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.chat-open:hover,
+.chat-open.active {
+  background: #1a1a2e;
+}
+
+.chat-open.active {
+  color: var(--text);
+  border-left-color: var(--accent);
+  box-shadow:
+    inset 0 0 0 1px rgba(124, 58, 237, 0.18),
+    0 0 24px rgba(124, 58, 237, 0.12);
+}
+
+.chat-item-content {
+  min-width: 0;
+}
+
+.chat-title {
+  display: block;
+  color: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-date {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+.chat-delete {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: var(--danger);
+  opacity: 0;
+  align-self: center;
+  visibility: hidden;
+}
+
+.chat-item:hover .chat-delete,
+.chat-open.active + .chat-delete,
+.chat-delete:focus-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.chat-delete:hover {
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.empty-chats {
+  border: 1px dashed rgba(148, 163, 184, 0.16);
+  border-radius: 18px;
+  padding: 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
+.main-panel {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(124, 58, 237, 0.16);
+  background: rgba(12, 12, 18, 0.74);
+  backdrop-filter: blur(18px);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.topbar-title h2,
+.topbar-title p {
+  margin: 0;
+}
+
+.topbar-title h2 {
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-title p {
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.icon-button {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.icon-button span {
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--text);
 }
 
 .ghost-button {
@@ -111,13 +298,9 @@ body {
   gap: 0.45rem;
   padding: 0.8rem 1rem;
   color: var(--text);
+  border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(148, 163, 184, 0.16);
-}
-
-.ghost-button:hover,
-.send-button:hover {
-  transform: translateY(-1px);
 }
 
 .ghost-button:hover {
@@ -344,8 +527,6 @@ body {
   gap: 0.85rem;
   padding: 1rem 1.5rem 1.4rem;
   background: linear-gradient(180deg, rgba(10, 10, 15, 0), rgba(10, 10, 15, 0.95) 35%);
-  position: sticky;
-  bottom: 0;
 }
 
 #messageInput {
@@ -357,7 +538,6 @@ body {
   border: 1px solid rgba(148, 163, 184, 0.16);
   background: var(--panel);
   color: var(--text);
-  font: inherit;
   line-height: 1.5;
   padding: 1rem 1.15rem;
   outline: none;
@@ -383,7 +563,8 @@ body {
   min-width: 98px;
   height: 58px;
   padding: 0 1.4rem;
-  color: white;
+  color: #fff;
+  border-radius: 999px;
   background: linear-gradient(135deg, #2563eb, #3b82f6);
   box-shadow:
     0 12px 30px rgba(37, 99, 235, 0.3),
@@ -391,6 +572,10 @@ body {
 }
 
 .hidden {
+  display: none;
+}
+
+.mobile-only {
   display: none;
 }
 
@@ -440,26 +625,65 @@ body {
   }
 }
 
+@media (max-width: 920px) {
+  .app-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(280px, 84vw);
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .app-shell.sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 4, 10, 0.58);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 20;
+  }
+
+  .app-shell.sidebar-open .sidebar-overlay {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-only {
+    display: inline-flex;
+  }
+}
+
 @media (max-width: 720px) {
-  .navbar {
-    padding: 1rem;
+  body {
+    overflow: auto;
+  }
+
+  .topbar,
+  .chat-container,
+  .typing-indicator,
+  .input-bar {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .topbar {
+    align-items: flex-start;
     flex-wrap: wrap;
   }
 
-  .brand h1 {
-    letter-spacing: 0.32rem;
-  }
-
-  .nav-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .chat-container,
-  .input-bar,
-  .typing-indicator {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  .topbar-title h2 {
+    max-width: 45vw;
   }
 
   .message-row {
