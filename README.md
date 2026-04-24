@@ -1,41 +1,52 @@
 # Jarvis
 
-Jarvis is a sleek full-stack personal AI assistant with a sci-fi dark UI, Groq-powered chat, persistent JSON-backed conversation history, markdown replies, and automatic spoken responses in a female voice using the browser's Web Speech API.
+Jarvis is a full-stack browser AI assistant with a premium glassmorphism interface, persistent chat history, browser command execution, voice input and speech output, and built-in mock image generation.
 
 ## Features
 
-- Full-screen chat interface inspired by modern AI assistants
-- Groq API integration with persistent multi-chat history
-- Markdown rendering for AI responses
-- Auto-scroll, typing indicator, timestamps, and message replay audio
-- Female voice auto-selected with mute/unmute control
-- Responsive sidebar with saved conversations, timestamps, and delete controls
-- New Chat button that creates a fresh conversation and stops speech
-- Local JSON file storage for saved conversations in `server/chats.json`
-- Express backend with CORS and dotenv support
+- React + Vite frontend with Tailwind CSS styling
+- Express backend with persistent JSON chat storage
+- Left sidebar with previous chats, switching, and delete controls
+- Voice input using the Web Speech API
+- Speech synthesis with selectable browser voices
+- Voice toggle, mic button, and keyboard shortcut: `Ctrl + Shift + M`
+- Modular command handling:
+  - `open youtube`
+  - `open google`
+  - `search for futuristic dashboards`
+  - `summarize this page`
+- Image mode plus natural prompts like `create an image of a neon city`
+- Typing indicator, smooth scrolling, loading states, and responsive layout
 
-## Tech Stack
+## Stack
 
-- Frontend: HTML, CSS, Vanilla JavaScript
+- Frontend: React, Vite, Tailwind CSS
 - Backend: Node.js, Express
-- AI: Groq (`llama-3.3-70b-versatile`)
-- Voice: Web Speech API (`speechSynthesis`)
+- AI chat: Groq API
+- Voice: Web Speech API
+- Image generation: local mock image generator with saved prompt history
 
 ## Project Structure
 
 ```text
 jarvis/
-  public/
-    index.html
-    style.css
-    script.js
+  src/
+    api/
+    components/
+    hooks/
+    utils/
+    App.jsx
+    main.jsx
+    styles.css
   server/
     index.js
-    chats.json
-  .env
-  .gitignore
+    chats.json           # legacy import source if present
+  data/
+    chats.json           # runtime chat persistence
+  .env.example
+  index.html
   package.json
-  README.md
+  vite.config.mjs
 ```
 
 ## Setup
@@ -47,31 +58,42 @@ jarvis/
 npm install
 ```
 
-3. Add your Groq API key in `.env`:
+3. Create `.env` from `.env.example` and add your Groq API key:
 
 ```env
-GROQ_API_KEY=your_real_key_here
+GROQ_API_KEY=your_groq_api_key_here
+PORT=3000
 ```
 
-4. Start the server:
+4. Start the full stack in development:
+
+```bash
+npm run dev
+```
+
+5. Open `http://localhost:5173`.
+
+The backend runs on `http://localhost:3000` and Vite proxies `/api` requests automatically.
+
+## Production Build
+
+Build the frontend:
+
+```bash
+npm run build
+```
+
+Start the Express server:
 
 ```bash
 npm start
 ```
 
-5. Open `http://localhost:3000` in your browser.
-
-## API
-
-- `GET /api/chats` returns the saved conversation list
-- `GET /api/chats/:id` returns a full conversation with messages
-- `POST /api/chats` creates a new conversation with the Jarvis welcome message
-- `POST /api/chats/:id/messages` adds a user message and stores the AI reply
-- `DELETE /api/chats/:id` removes a conversation
+Then open `http://localhost:3000`.
 
 ## Notes
 
-- Voice playback depends on the voices available in the user's browser and operating system.
-- Browsers may require a user interaction before speech playback works consistently.
-- Chat history is saved locally in `server/chats.json` and reloaded when the app restarts.
-- `server/chats.json` is ignored by Git so local conversations do not get committed.
+- If `GROQ_API_KEY` is missing, Jarvis still supports browser commands, chat storage, speech controls, and mock image generation, but conversational AI replies will be limited.
+- Voice input depends on browser support for `SpeechRecognition` or `webkitSpeechRecognition`.
+- Voice output depends on voices installed in the browser and operating system.
+- Chat history is stored locally in `data/chats.json`.
