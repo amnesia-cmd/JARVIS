@@ -1,3 +1,5 @@
 node_modules/
 server/chats.json
+data/chats.json
+dist/
 .env
